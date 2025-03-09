@@ -28,23 +28,27 @@ $ docker compose up -d
 ## 確認
 
 ```console
-docker compose ps
+$ docker compose ls
+NAME                STATUS              CONFIG FILES
+docker-debian       running(1)          ./compose.yaml
+```
+
+```console
+$ docker compose ps
 NAME                     IMAGE                  COMMAND   SERVICE   CREATED              STATUS              PORTS
 docker-debian-debian-1   debian:bookworm-slim   "bash"    debian    About a minute ago   Up About a minute
 ```
 
-## 接続
-
 ```console
-$ docker compose exec debian bash
-root@4d928d218c19:/# 
+$ docker container ls
+CONTAINER ID   IMAGE                  COMMAND                  CREATED         STATUS         PORTS                  NAMES
+7fe8bd516e7d   debian:bookworm-slim   "bash"                   2 minutes ago   Up 2 minutes                          docker-debian-debian-1
 ```
 
-`docker compose exec`で起動したコンテナに接続できます。
-上記のサンプルでは、接続後に`bash`を起動しています。
+## バージョン確認
 
 ```console
-root@4d928d218c19:/# cat /etc/os-release 
+$ docker compose exec debian cat /etc/os-release
 PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
 NAME="Debian GNU/Linux"
 VERSION_ID="12"
@@ -56,8 +60,19 @@ SUPPORT_URL="https://www.debian.org/support"
 BUG_REPORT_URL="https://bugs.debian.org/"
 ```
 
-コンテナの中は、通常のLinux（Debian）のようにコマンドを使用できます。
+`docker compose exec コンテナ名 コマンド`で、コンテナ内でコマンドを実行できます。
 上記のサンプルでは、`/etc/os-release`の内容を表示しOSのバージョンを確認しています。
+
+## シェル起動
+
+```console
+$ docker compose exec debian bash
+root@4d928d218c19:/# 
+```
+
+`docker compose exec`で起動したコンテナに接続できます。
+上記のサンプルでは、接続後に`bash`を起動しています。
+コンテナ内で起動したシェルの中では、通常のLinux（Debian）のようにコマンドを使用できます。
 
 ## 終了
 
